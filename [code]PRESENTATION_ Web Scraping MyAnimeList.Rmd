@@ -1,0 +1,130 @@
+---
+title: "Web Scraping et Analyse de Données de MyAnimeList à l'aide de R"
+author: "BALLOGOU Essi, ALPHA OUMAR Diallo"
+date: "2024-12-23"
+output: powerpoint_presentation
+---
+
+# Introduction
+
+- **Projet** : Web scraping et analyse des 200 animés les plus populaires sur MyAnimeList.
+- **Outils utilisés** : R, rvest, ggplot2, dplyr.
+- **Objectifs** : 
+  - Extraire les données via web scraping.
+  - Analyser les relations entre popularité et score.
+  - Identifier les tendances des scores et membres
+  
+---
+
+# Présentation de MyAnimeList
+
+- **MyAnimeList** : Une base de données sur les animés, utilisée par des millions d'utilisateurs.
+- **Termes clés** :
+  - **Score** : Moyenne des notes données par les utilisateurs (1-10).
+  - **Members** : Popularité mesurée par le nombre de membres.
+
+---
+
+# Bibliothèques utilisées
+```{r}
+library(rvest) # Web scraping
+library(stringr) # Manipulation de chaînes de caractères
+library(ggplot2) # Visualisation
+```
+
+---
+
+# Méthodologie
+
+## Fonction d'extraction des données
+```{r}
+top_anime_scraper <- function(url) {
+  page <- read_html(url)
+  
+  # Extraction des détails
+  animes <- page %>%
+    html_nodes('.detail') %>%
+    html_text(trim = TRUE) %>%
+    str_replace_all('[\n]', '')
+  
+  # Séparation et nettoyage
+  separated_data <- str_split(animes, "\\s{2,}", simplify = TRUE)
+  data_frame <- as.data.frame(separated_data, stringsAsFactors = FALSE)
+  
+  # Renommer et ajouter des scores
+  colnames(data_frame) <- c("Title", "Type_Episodes", "Airing_Period", "Members")
+  scores <- page %>%
+    html_nodes('.score.fs14') %>%
+    html_text(trim = TRUE) %>%
+    str_replace_all('[\n, N/A]', '')
+  data_frame$Score <- scores
+  
+  return(data_frame)
+}
+
+```
+
+---
+
+# Récupération des Données
+
+## Boucle pour 200 animés 
+```{r}
+all_anime <- data.frame()
+for (i in seq(0, 150, by = 50)) {
+  url <- paste0("https://myanimelist.net/topanime.php?limit=", i)
+  anime_page <- top_anime_scraper(url)
+  all_anime <- rbind(all_anime, anime_page)
+}
+# Nettoyage des colonnes
+all_anime$Members <- gsub(" members", "", all_anime$Members)
+
+```
+
+---
+
+# Visualisation
+
+## Histogramme des scores
+```{r}
+ggplot(all_anime, aes(x = as.numeric(Score))) +
+  geom_histogram(binwidth = 0.1, fill = "skyblue", color = "black") +
+  labs(title = "Répartition des Scores des Animés",
+       x = "Score", 
+       y = "Nombre d'Animés")
+
+```
+
+---
+
+# Visualisation
+
+## Top 10 des Animés les Plus Populaires
+```{r}
+top_10_members <- all_anime[1:10, ]
+top_10_members$Members <- as.numeric(gsub(",", "", top_10_members$Members))
+
+ggplot(top_10_members, aes(x = reorder(Title, Members), y = Members)) +
+  geom_bar(stat = "identity", fill = "orange") +
+  labs(title = "Top 10 des Animés les Plus Populaires",
+       x = "Titre",
+       y = "Nombre de Membres") +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+```
+
+---
+
+# Corrélation Popularité-Score
+```{r}
+all_anime$Members <- as.numeric(gsub(",", "", all_anime$Members))
+
+ggplot(all_anime, aes(x = Members, y = as.numeric(Score))) +
+  geom_point(color = "blue") +
+  geom_smooth(method = "lm", color = "red") +
+  labs(title = "Corrélation entre Popularité et Score",
+       x = "Nombre de Membres",
+       y = "Score")
+
+```
+
