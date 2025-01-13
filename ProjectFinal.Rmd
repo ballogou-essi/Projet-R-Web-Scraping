@@ -12,8 +12,6 @@ library(stringr) # Pour manipuler les chaines de charactères
 library(ggplot2) # Pour visualisualiser avec des graphiques 
 ```
 
-
-
 ## 2. Fonction pour extraire les informations du site web
 ```{r}
 top_anime_scraper <- function(url) {
@@ -73,16 +71,12 @@ all_anime$Members <- gsub(" members", "", all_anime$Members) # Retirer le mot "m
 
 ```
 
-
-
 ## 4. Récupération des données
 ```{r}
 write.csv(all_anime, "200_Top_Anime.csv", row.names = FALSE)
 getwd()
 
 ```
-
-
 
 ## 5.Visualisation
 
@@ -100,7 +94,6 @@ ggplot(all_anime, aes(x = as.numeric(Score))) +
 Interprétation: 
 
  - Environ 156 animés, donc plus de la moitié, de notre dataset, ont un score se situant entre 8.4 et 8.7
- 
  
 ### 5.2 Top 10 des Animés par Nombre de Membres
 ```{r}
@@ -123,7 +116,6 @@ ggplot(top_10_members, aes(x = reorder(Title, Members), y = Members)) +
 
 ```
 
-
 ### 5.3 Membres vs Score
 ```{r}
 # Les nombres contenu dans la colonne Members, sont considérés comme des textes. Alors on convertit tout en numérique en suppriment les ',' (ex: 199,345 en 199345) pour que R les traites comme des nombres : 
@@ -137,8 +129,6 @@ ggplot(all_anime, aes(x = Members, y = as.numeric(Score))) +
   labs(title = "Corrélation entre Popularité et Score",
        x = "Nombre de membres",
        y = "Score")
-
-
 
 ```
 
@@ -163,7 +153,6 @@ Interprétation:
  - La plupart des animés se concentrent sur des effectifs bas. Donc, la majorité des animés présente dans notre data frame ne sont pas très populaire.
  
  - Une minorité d'animés sont très populaires.
-
 
 
 ## Conclusion 
