@@ -38,3 +38,7 @@ Ce projet démontre comment le web scraping et l'analyse des données peuvent fo
 
 ## Source des Données 
 [MyAnimeList](https://myanimelist.net/topanime.php?type=all&topkeyword=)
+
+## Noms des membres du Groupe
+ - **BALLOGOU Essi Carole Claudia**
+ - **ALPHA OUMAR Diallo**
