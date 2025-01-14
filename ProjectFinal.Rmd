@@ -1,6 +1,6 @@
 ---
 title: "Web Scraping et analyse de données de MyAnimeList à l'aide de R"
-author: "BALLOGOU Essi, ALPHA OUMAR"
+author: "BALLOGOU Essi, DIALLO Alpha Oumar"
 date: "2024-12-23"
 output: html_document
 ---
