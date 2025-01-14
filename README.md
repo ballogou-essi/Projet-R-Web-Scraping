@@ -41,4 +41,4 @@ Ce projet démontre comment le web scraping et l'analyse des données peuvent fo
 
 ## Noms des membres du Groupe
  - **BALLOGOU Essi Carole Claudia**
- - **ALPHA OUMAR Diallo**
+ - **DIALLO Alpha Oumar**
