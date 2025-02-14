@@ -1,4 +1,4 @@
-# Projet-R-Web-Scraping
+#  Web Scraping sur MyAnimeList avec R
 
 Nous allons récupérer et analyser les données des 200 animés les plus populaires sur MyAnimeList en utilisant R. Ce projet comprend l’extraction des données, leur préparation et leur visualisation.
 
